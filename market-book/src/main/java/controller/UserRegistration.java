@@ -1,6 +1,5 @@
 package controller;
 
-import dao.UserInterfaceDAO;
 import factories.UserFactory;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -8,8 +7,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.User;
-import services.UserServiceInterface;
 
 
 @WebServlet("/UserRegistration")
@@ -29,10 +26,9 @@ public class UserRegistration extends HttpServlet {
         var email = request.getParameter("email");
         var password = request.getParameter("password");
         //use of factory pattern
-        var newUser = UserFactory.getUser(name, surname, email, password);
+        var newUser = UserFactory.createUser(name, surname, email, password);
 
-        var userPersistence = UserFactory.getUserDAO();
-        var userService = UserFactory.getUserServiceImplementation(userPersistence);
+        var userService = UserFactory.getUserService();
         var registeredUser = userService.registerUser(newUser);
 
         if (registeredUser != null) {
