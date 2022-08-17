@@ -2,6 +2,7 @@ package controller;
 
 import dao.UserInterfaceDAO;
 import dao.UserQueryDAO;
+import factories.UserFactory;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,11 +33,9 @@ public class UserLogin extends HttpServlet {
         var email = request.getParameter("email");
         var password = request.getParameter("password");
 
-        UserInterfaceDAO userPersistence = new UserQueryDAO();
-        UserServiceInterface userService = new UserServiceImplementation(userPersistence);
+        var userService = UserFactory.getUserService();
         var loginStatus = userService.loginUser(email, password);
 
-        System.out.println("here  " + loginStatus);
         if (loginStatus.equals("success")) {
             response.sendRedirect("Success.jsp");
         } else {
