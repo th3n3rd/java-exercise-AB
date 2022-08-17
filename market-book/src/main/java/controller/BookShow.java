@@ -1,13 +1,12 @@
 package controller;
 
-import dao.BookQueryDAO;
+import factories.BookFactory;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import services.BookServiceImplementation;
 
 /**
  * Servlet implementation class BookShow
@@ -30,8 +29,7 @@ public class BookShow extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        var bookPersistence = new BookQueryDAO();
-        var bookService = new BookServiceImplementation(bookPersistence);
+        var bookService = BookFactory.getBookService();
         var availableBooks = bookService.listBooks();
 
         request.setAttribute("books", availableBooks);
