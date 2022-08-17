@@ -5,18 +5,21 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class BookConnection {
-    private static Connection con;
+    private static Connection connection;
 
     private BookConnection() {
     }
 
     public static Connection getBookConnection() {
+        if (connection != null) { // return the connection if already populated, singleton = same instance every time
+            return connection;
+        }
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/test", "root", "");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/test", "root", "");
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
-        return con;
+        return connection;
     }
 }
