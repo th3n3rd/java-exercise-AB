@@ -5,40 +5,43 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import model.User;
 
-public class UserServiceImplemantation implements UserServiceInterface {
-    private UserInterfaceDAO userDao;
+public class UserServiceImplementation implements UserServiceInterface {
+    private UserInterfaceDAO userPersistence;
 
-    public UserServiceImplemantation(UserInterfaceDAO userDao) {
+    public UserServiceImplementation(UserInterfaceDAO userPersistence) {
         super();
-        this.userDao = userDao;
+        this.userPersistence = userPersistence;
     }
 
     @Override
     public User registerUser(User user) {
         /* Plain-text password initialisation. */
-        String password = user.getUserPassword();
-        String encryptedpassword = null;
+        var plaintextPassword = user.getUserPassword();
         try {
             /* MessageDigest instance for MD5. */
-            MessageDigest m = MessageDigest.getInstance("MD5");
+            var messageDigest = MessageDigest.getInstance("MD5");
 
             /* Add plain-text password bytes to digest using MD5 update() method. */
-            m.update(password.getBytes());
+            messageDigest.update(plaintextPassword.getBytes());
 
             /* Convert the hash value into bytes */
-            byte[] bytes = m.digest();
+            var bytes = messageDigest.digest();
 
             /* The bytes array has bytes in decimal form. Converting it into hexadecimal format. */
-            StringBuilder s = new StringBuilder();
-            for (int i = 0; i < bytes.length; i++) {
-                s.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            var hashedPassword = new StringBuilder();
+            for (var i = 0; i < bytes.length; i++) {
+                hashedPassword.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
             }
             /* Complete hashed password in hexadecimal format */
-            encryptedpassword = s.toString();
             //create the new object with the new encrypted paswword
-            User usr = new User(user.getUsername(), user.getUserSurname(), user.getUserEmail(), encryptedpassword);
+            var usr = new User(
+                user.getUsername(),
+                user.getUserSurname(),
+                user.getUserEmail(),
+                hashedPassword.toString()
+            );
 
-            return this.userDao.registerUser(usr);
+            return this.userPersistence.registerUser(usr);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
@@ -47,26 +50,23 @@ public class UserServiceImplemantation implements UserServiceInterface {
 
     @Override
     public String loginUser(String email, String password) {
-        String encryptedpassword = null;
         try {
             /* MessageDigest instance for MD5. */
-            MessageDigest m = MessageDigest.getInstance("MD5");
+            var messageDigest = MessageDigest.getInstance("MD5");
 
             /* Add plain-text password bytes to digest using MD5 update() method. */
-            m.update(password.getBytes());
+            messageDigest.update(password.getBytes());
 
             /* Convert the hash value into bytes */
-            byte[] bytes = m.digest();
+            var bytes = messageDigest.digest();
 
             /* The bytes array has bytes in decimal form. Converting it into hexadecimal format. */
-            StringBuilder s = new StringBuilder();
-            for (int i = 0; i < bytes.length; i++) {
-                s.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            var hashedPassword = new StringBuilder();
+            for (var i = 0; i < bytes.length; i++) {
+                hashedPassword.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
             }
             /* Complete hashed password in hexadecimal format */
-            encryptedpassword = s.toString();
-            //            Student std = new Student(email,encryptedpassword);
-            return this.userDao.loginUser(email, encryptedpassword);
+            return this.userPersistence.loginUser(email, hashedPassword.toString());
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }

@@ -12,42 +12,42 @@ import utilities.BookConnection;
 public class BookQueryDAO implements BookInterfaceDAO, Serializable {
 
     private static final long serialVersionUID = 1L;
-    private Connection con;
-    private PreparedStatement pst;
-    private ResultSet res;
-    private ArrayList<Book> list;
+    private Connection connection;
+    private PreparedStatement preparedStatement;
+    private ResultSet results;
+    private ArrayList<Book> books;
 
-    public ArrayList<Book> showBooks() {
-        con = BookConnection.getBookConnection();
-        String query = "SELECT * FROM book";
+    public ArrayList<Book> listBooks() {
+        connection = BookConnection.getBookConnection();
+        var query = "SELECT * FROM book";
 
-        list = new ArrayList<Book>();
+        books = new ArrayList<Book>();
 
         try {
-            pst = con.prepareStatement(query);
+            preparedStatement = connection.prepareStatement(query);
 
-            res = pst.executeQuery();
+            results = preparedStatement.executeQuery();
 
-            while (res.next()) {
-                Book book = new Book();
-                book.setBookId(res.getInt("id"));
-                book.setBookTitle(res.getString("title"));
-                book.setBookAuthor(res.getString("author"));
-                book.setBookYear(res.getInt("year"));
-                book.setBookCost(res.getDouble("cost"));
+            while (results.next()) {
+                var book = new Book();
+                book.setBookId(results.getInt("id"));
+                book.setBookTitle(results.getString("title"));
+                book.setBookAuthor(results.getString("author"));
+                book.setBookYear(results.getInt("year"));
+                book.setBookCost(results.getDouble("cost"));
 
-                list.add(book);
+                books.add(book);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
         try {
-            res.close();
-            con.close();
+            results.close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return list;
+        return books;
     }
 }

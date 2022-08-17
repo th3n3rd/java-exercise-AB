@@ -9,24 +9,24 @@ import utilities.UserConnection;
 
 public class UserQueryDAO implements UserInterfaceDAO {
 
-    private Connection con;
-    private PreparedStatement pst;
-    private ResultSet res;
+    private Connection connection;
+    private PreparedStatement preparedStatement;
+    private ResultSet results;
 
     @Override
     public User registerUser(User user) {
-        con = UserConnection.getUserConnection();
-        String query = "INSERT INTO user (name,surname,email,password) VALUES(?,?,?,?)";
+        connection = UserConnection.getUserConnection();
+        var query = "INSERT INTO user (name,surname,email,password) VALUES(?,?,?,?)";
 
         try {
-            pst = con.prepareStatement(query);
+            preparedStatement = connection.prepareStatement(query);
 
-            pst.setString(1, user.getUsername());
-            pst.setString(2, user.getUserSurname());
-            pst.setString(3, user.getUserEmail());
-            pst.setString(4, user.getUserPassword());
+            preparedStatement.setString(1, user.getUsername());
+            preparedStatement.setString(2, user.getUserSurname());
+            preparedStatement.setString(3, user.getUserEmail());
+            preparedStatement.setString(4, user.getUserPassword());
 
-            int value = pst.executeUpdate();
+            var value = preparedStatement.executeUpdate();
             System.out.println(user);
             System.out.println(value);
 
@@ -44,17 +44,17 @@ public class UserQueryDAO implements UserInterfaceDAO {
     public String loginUser(String email, String password) {
         String loginStatus = null;
 
-        con = UserConnection.getUserConnection();
-        String query = "SELECT * FROM user WHERE email =? AND password =?";
+        connection = UserConnection.getUserConnection();
+        var query = "SELECT * FROM user WHERE email =? AND password =?";
         try {
-            pst = con.prepareStatement(query);
+            preparedStatement = connection.prepareStatement(query);
             //replace the ? with email and password details
-            pst.setString(1, email);
-            pst.setString(2, password);
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, password);
 
-            res = pst.executeQuery();
+            results = preparedStatement.executeQuery();
 
-            if (res.next()) {
+            if (results.next()) {
                 loginStatus = "success";
             } else {
                 loginStatus = "failure";

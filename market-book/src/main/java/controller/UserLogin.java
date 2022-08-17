@@ -8,7 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import services.UserServiceImplemantation;
+import services.UserServiceImplementation;
 import services.UserServiceInterface;
 
 /**
@@ -29,15 +29,15 @@ public class UserLogin extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        var email = request.getParameter("email");
+        var password = request.getParameter("password");
 
-        UserInterfaceDAO dao = new UserQueryDAO();
-        UserServiceInterface usi = new UserServiceImplemantation(dao);
-        String status = usi.loginUser(email, password);
+        UserInterfaceDAO userPersistence = new UserQueryDAO();
+        UserServiceInterface userService = new UserServiceImplementation(userPersistence);
+        var loginStatus = userService.loginUser(email, password);
 
-        System.out.println("here  " + status);
-        if (status.equals("success")) {
+        System.out.println("here  " + loginStatus);
+        if (loginStatus.equals("success")) {
             response.sendRedirect("Success.jsp");
         } else {
             response.sendRedirect("Fail.jsp");

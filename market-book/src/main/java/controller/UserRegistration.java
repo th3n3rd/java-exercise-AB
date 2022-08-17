@@ -24,18 +24,16 @@ public class UserRegistration extends HttpServlet {
         HttpServletRequest request,
         HttpServletResponse response
     ) throws ServletException, IOException {
-        String name = request.getParameter("name");
-        String surname = request.getParameter("surname");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        var name = request.getParameter("name");
+        var surname = request.getParameter("surname");
+        var email = request.getParameter("email");
+        var password = request.getParameter("password");
         //use of factory pattern
-        User us = UserFactory.getUser(name, surname, email, password);
+        var newUser = UserFactory.getUser(name, surname, email, password);
 
-        UserInterfaceDAO dao = UserFactory.getUserDAO();
-
-        UserServiceInterface usi = UserFactory.getUserServiceImplementation(dao);
-
-        User registeredUser = usi.registerUser(us);
+        var userPersistence = UserFactory.getUserDAO();
+        var userService = UserFactory.getUserServiceImplementation(userPersistence);
+        var registeredUser = userService.registerUser(newUser);
 
         if (registeredUser != null) {
             response.sendRedirect("Success.jsp");

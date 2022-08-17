@@ -3,7 +3,7 @@ package factories;
 import dao.UserInterfaceDAO;
 import dao.UserQueryDAO;
 import model.User;
-import services.UserServiceImplemantation;
+import services.UserServiceImplementation;
 import services.UserServiceInterface;
 
 public class UserFactory {
@@ -27,6 +27,6 @@ public class UserFactory {
     }
 
     public static UserServiceInterface getUserServiceImplementation(UserInterfaceDAO dao) {
-        return new UserServiceImplemantation(dao);
+        return new UserServiceImplementation(dao);
     }
 }
