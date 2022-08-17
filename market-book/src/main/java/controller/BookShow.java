@@ -2,7 +2,6 @@ package controller;
 
 import dao.BookQueryDAO;
 import java.io.IOException;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -33,7 +32,7 @@ public class BookShow extends HttpServlet {
     ) throws ServletException, IOException {
         var bookPersistence = new BookQueryDAO();
         var bookService = new BookServiceImplementation(bookPersistence);
-        var availableBooks = bookService.showBooks();
+        var availableBooks = bookService.listBooks();
 
         request.setAttribute("books", availableBooks);
         request.getRequestDispatcher("/bookList.jsp").include(request, response);

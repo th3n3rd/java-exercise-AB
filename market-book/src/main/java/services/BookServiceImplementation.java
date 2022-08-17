@@ -13,7 +13,7 @@ public class BookServiceImplementation implements BookServiceInterface {
     }
 
     @Override
-    public ArrayList<Book> showBooks() {
+    public ArrayList<Book> listBooks() {
         return this.bookPersistence.listBooks();
     }
 }
