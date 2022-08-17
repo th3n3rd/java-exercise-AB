@@ -12,22 +12,16 @@ import utilities.BookConnection;
 public class BookQueryDAO implements BookInterfaceDAO, Serializable {
 
     private static final long serialVersionUID = 1L;
-    private Connection connection;
-    private PreparedStatement preparedStatement;
-    private ResultSet results;
-    private ArrayList<Book> books;
 
     public ArrayList<Book> listBooks() {
-        connection = BookConnection.getBookConnection();
         var query = "SELECT * FROM book";
+        var books = new ArrayList<Book>();
 
-        books = new ArrayList<Book>();
-
-        try {
-            preparedStatement = connection.prepareStatement(query);
-
-            results = preparedStatement.executeQuery();
-
+        try (
+            var connection = BookConnection.getBookConnection();
+            var preparedStatement = connection.prepareStatement(query);
+            var results = preparedStatement.executeQuery();
+        ) {
             while (results.next()) {
                 var book = new Book();
                 book.setBookId(results.getInt("id"));
@@ -38,16 +32,10 @@ public class BookQueryDAO implements BookInterfaceDAO, Serializable {
 
                 books.add(book);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            results.close();
-            connection.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         return books;
     }
 }
