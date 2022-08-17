@@ -1,12 +1,8 @@
 package dao;
 
-
 import java.util.ArrayList;
-
-
 import model.Book;
 
-
-public interface BookInterfaceDAO {	
-	ArrayList<Book> showBooks();
+public interface BookInterfaceDAO {
+    ArrayList<Book> showBooks();
 }
