@@ -7,17 +7,6 @@ import services.UserServiceImplementation;
 import services.UserServiceInterface;
 
 public class UserFactory {
-    public static User getUser(
-        Integer userId,
-        String userName,
-        String userSurname,
-        String userEmail,
-        String userPassword
-    ) {
-        return new User(userId, userName, userSurname, userEmail, userPassword);
-    }
-
-    //Overload
     public static User getUser(String userName, String userSurname, String userEmail, String userPassword) {
         return new User(userName, userSurname, userEmail, userPassword);
     }
