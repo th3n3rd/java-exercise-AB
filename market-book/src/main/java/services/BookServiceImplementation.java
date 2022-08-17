@@ -8,7 +8,6 @@ public class BookServiceImplementation implements BookServiceInterface {
     BookInterfaceDAO bookPersistence;
 
     public BookServiceImplementation(BookInterfaceDAO bookPersistence) {
-        super();
         this.bookPersistence = bookPersistence;
     }
 

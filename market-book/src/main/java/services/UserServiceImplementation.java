@@ -9,7 +9,6 @@ public class UserServiceImplementation implements UserServiceInterface {
     private UserInterfaceDAO userPersistence;
 
     public UserServiceImplementation(UserInterfaceDAO userPersistence) {
-        super();
         this.userPersistence = userPersistence;
     }
 
