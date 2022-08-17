@@ -34,11 +34,8 @@ public class BookShow extends HttpServlet {
         var bookPersistence = new BookQueryDAO();
         var bookService = new BookServiceImplementation(bookPersistence);
         var availableBooks = bookService.showBooks();
-        System.out.println(availableBooks);
 
-        RequestDispatcher view = null;
-        request.setAttribute("res", "my new list");
-        view = request.getRequestDispatcher("/bookList.jsp");
-        view.include(request, response);
+        request.setAttribute("books", availableBooks);
+        request.getRequestDispatcher("/bookList.jsp").include(request, response);
     }
 }

@@ -12,17 +12,12 @@
 <title>Insert title here</title>
 </head>
 <body>
- 
 
-<%
-     
-%>
 <h1>Book Lists</h1>
-	<p>The result is ${requestScope.res}</p>
-	
-	
-	
-	
-	 
+    <ul>
+        <c:forEach var="book" items="${books}">
+        <li>${book.getBookTitle()}<li>
+        </c:forEach>
+    </ul>
 </body>
 </html>
